@@ -16,13 +16,19 @@ def step_impl(context):
     for row in context.table:
         context.lista.add(row['clave'], row['elemento'])
 
-@then(u'la lista no debe tener elementos')
-def step_impl(context):
-    assert context.lista.count_elementos() == 0
+@when(u'se desea eliminar el elemento "{elemento}"')
+def step_impl(context, elemento):
+    try:
+        context.lista.delete(elemento)   
+        context.exc = None 
+    except ValueError as e:
+        context.exc = e
 
-@then(u'la lista no debe tener claves')
+
+@then(u'la lista no debe tener claves ni elementos')
 def step_impl(context):
     assert context.lista.count_claves() == 0
+    assert context.lista.count_elementos() == 0
 
 @then(u'la lista debe tener "{n_elementos}" elementos')
 def step_impl(context, n_elementos):
@@ -45,3 +51,10 @@ def step_impl(context):
         keys.append(row['clave'])
     keys = np.asarray(keys)
     assert (context.lista.claves == keys).all()
+
+@then('debe arrojar el error {tipo} con el mensaje "{mensaje}"')
+def step(context, tipo, mensaje):
+    print(context.exc)
+
+    assert isinstance(context.exc, eval(tipo)), "Invalid exception - expected " + tipo
+    assert str(context.exc) == mensaje, "Invalid message - expected " + mensaje

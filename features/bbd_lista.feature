@@ -8,11 +8,11 @@ Característica: Feaures que deben cumplir las listas según los requisitos esta
 	Cuando se agrega un elemento a una lista no vacía con calve existente la lista actualiza el valor correspondiente
 	Cuando se agrega un elemento a una lista vacía la lista de calves está ordenada
 
+
 Escenario: Comportamiento esperado lista vacia
 	Dado que tengo una lista
 	Cuando esta vacía
-	Entonces la lista no debe tener elementos
-	Y la lista no debe tener claves
+	Entonces la lista no debe tener claves ni elementos
 
 
 Escenario: Cantidad de elementos y claves consistentes respecto a la cantidad de pares agregados
@@ -66,3 +66,15 @@ Escenario: Cuando se agrega un elemento a una lista vacía la lista de calves es
 		| campo       |
 		| comida      |
 		| zebra       |
+
+
+Escenario: Retornar mensaje de error cuando se desea eliminar un elemento inexistente
+	Dado que tengo una lista
+	Cuando agrego los pares
+		| clave       | elemento  |
+		| abeja       |  timba    |
+		| campo       |  pasto    |
+		| campo       |  verde    |
+		| comida      | risotto   |
+		Y se desea eliminar el elemento "auricular"
+	Entonces debe arrojar el error ValueError con el mensaje "No encontró la clave!"
